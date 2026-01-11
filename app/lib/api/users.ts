@@ -7,22 +7,37 @@ type fetchAllUsersParams = {
 };
 
 export const fetchAllUsers = async ({
-  limit = 0,
+  limit = 30,
   skip = 0,
 }: fetchAllUsersParams) => {
   const response = await API.get(`/users?limit=${limit}&skip=${skip}`);
-  const data = response.data;
 
-  const formattedData: User[] = data.map((user: any) => ({
+  const users = response.data.users || response.data;
+
+  const formattedData: User[] = users.map((user: any) => ({
     id: user.id,
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
-    skillset: user.skillset,
-    createdAt: new Date(user.createdAt),
+    skillset: user.skillset || (user.university ? [user.university] : []),
+    createdAt: new Date(user.birthDate || new Date()),
   }));
 
   return formattedData;
+};
+
+export const fetchUserById = async (id: number): Promise<User> => {
+  const response = await API.get(`/users/${id}`);
+  const user = response.data;
+
+  return {
+    id: user.id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    skillset: user.skillset || (user.university ? [user.university] : []),
+    createdAt: new Date(user.birthDate || new Date()),
+  };
 };
 
 export const deleteUsers = async (userIds: number[]) => {
@@ -41,14 +56,43 @@ export const createUser = async (userData: {
   email: string;
   skillset: string[];
 }) => {
-  const response = await API.post("/users/add", userData);
+  const response = await API.post("/users/add", {
+    firstName: userData.firstName,
+    lastName: userData.lastName,
+    email: userData.email,
+  });
 
   return {
     id: response.data.id,
     firstName: response.data.firstName,
     lastName: response.data.lastName,
     email: response.data.email,
-    skillset: response.data.skillset,
-    createdAt: new Date(response.data.createdAt || new Date()),
+    skillset: userData.skillset,
+    createdAt: new Date(),
+  };
+};
+
+export const updateUser = async (
+  id: number,
+  userData: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    skillset: string[];
+  },
+) => {
+  const response = await API.put(`/users/${id}`, {
+    firstName: userData.firstName,
+    lastName: userData.lastName,
+    email: userData.email,
+  });
+
+  return {
+    id: response.data.id,
+    firstName: response.data.firstName,
+    lastName: response.data.lastName,
+    email: response.data.email,
+    skillset: userData.skillset,
+    createdAt: new Date(response.data.birthDate || new Date()),
   };
 };

@@ -1,5 +1,6 @@
 import { Plus } from "lucide-react";
 import * as React from "react";
+import { toast } from "sonner";
 import { Button } from "~/components/ui/button";
 import {
   Dialog,
@@ -40,10 +41,12 @@ export const UsersTableModalAdd = ({ onComplete }: UsersTableModalAddProps) => {
           skillset,
         });
 
+        toast.success("User created successfully!");
         setIsOpen(false);
         onComplete?.();
       } catch (error) {
         console.error("Failed to create user:", error);
+        toast.error("Failed to create user. Please try again.");
       } finally {
         setIsSubmitting(false);
       }

@@ -43,7 +43,7 @@ export const MobileNavbar = ({ logo, menu }: NavbarProps) => {
 
             <Button asChild variant="secondary">
               <a
-                href="https://github.com/Kablan-A/solva-test-task"
+                href="https://github.com/Kablan-A/tds-tz"
                 target="_blank"
                 rel="noopener noreferrer"
               >

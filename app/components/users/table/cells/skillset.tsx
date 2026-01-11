@@ -6,7 +6,7 @@ import {
   HoverCardTrigger,
 } from "~/components/ui/hover-card";
 import type { User } from "~/lib/types";
-import { transformSkillset } from "~/lib/utils";
+import { formatSkillsetToString } from "~/lib/utils";
 
 type UsersTableCellsSkillsetProps = {
   row: Row<User>;
@@ -20,7 +20,7 @@ export const UsersTableCellsSkillset = ({
     return <span className="text-muted-foreground">No skills</span>;
   }
 
-  const truncatedStringSkills = transformSkillset(skillset.slice(0, 3));
+  const truncatedStringSkills = formatSkillsetToString(skillset.slice(0, 3));
   const hasMoreSkills = skillset.length > 3;
 
   if (!hasMoreSkills) {
