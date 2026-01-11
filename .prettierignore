@@ -1,0 +1,10 @@
+build/
+node_modules/
+package-lock.json
+package.json
+components.json
+vite.config.ts
+tsconfig.json
+README.md
+react-router.config.ts
+.prettierrc
