@@ -18,7 +18,7 @@ export const fetchAllUsers = async ({
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
-    skillSet: user.skillSet,
+    skillset: user.skillset,
     createdAt: new Date(user.createdAt),
   }));
 
@@ -26,12 +26,29 @@ export const fetchAllUsers = async ({
 };
 
 export const deleteUsers = async (userIds: number[]) => {
-  // Delete users in parallel
   const deletePromises = userIds.map((id) => API.delete(`/users/${id}`));
   const responses = await Promise.all(deletePromises);
 
   return {
     success: true,
     deletedCount: responses.length,
+  };
+};
+
+export const createUser = async (userData: {
+  firstName: string;
+  lastName: string;
+  email: string;
+  skillset: string[];
+}) => {
+  const response = await API.post("/users/add", userData);
+
+  return {
+    id: response.data.id,
+    firstName: response.data.firstName,
+    lastName: response.data.lastName,
+    email: response.data.email,
+    skillset: response.data.skillset,
+    createdAt: new Date(response.data.createdAt || new Date()),
   };
 };

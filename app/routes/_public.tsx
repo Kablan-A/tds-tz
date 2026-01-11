@@ -7,7 +7,7 @@ export default function AppLayout() {
       <div className="border-b">
         <Navbar />
       </div>
-      <main className="flex-1 max-w-6xl w-full mx-auto">
+      <main className="py-10 flex-1 max-w-6xl w-full mx-auto">
         <Outlet />
       </main>
     </div>

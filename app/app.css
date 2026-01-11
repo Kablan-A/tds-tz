@@ -138,4 +138,8 @@ body {
   a.active {
     @apply text-primary;
   }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
 }

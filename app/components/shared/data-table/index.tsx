@@ -29,6 +29,7 @@ interface DataTableProps<TData, TValue> {
   bulkActions?: (
     table: ReturnType<typeof useReactTable<TData>>,
   ) => React.ReactNode;
+  addAction?: React.ReactNode;
   filterConfig?: {
     column: string;
     placeholder: string;
@@ -39,6 +40,7 @@ export const DataTable = <TData, TValue>({
   columns,
   data,
   bulkActions,
+  addAction,
   filterConfig = { column: "email", placeholder: "Filter emails..." },
 }: DataTableProps<TData, TValue>) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -88,7 +90,10 @@ export const DataTable = <TData, TValue>({
           />
           {bulkActions?.(table)}
         </div>
-        <DataTableToggleVisibility table={table} />
+        <div className="flex items-center gap-3">
+          {addAction}
+          <DataTableToggleVisibility table={table} />
+        </div>
       </div>
       <div className="overflow-hidden rounded-md border">
         <Table>

@@ -31,7 +31,7 @@ export const USERS_TABLE_COLUMNS: ColumnDef<User>[] = [
     ),
   },
   {
-    accessorKey: "skillSet",
+    accessorKey: "skillset",
     header: "Skills",
     cell: ({ row }) => <UsersTableCellsSkillset row={row} />,
   },

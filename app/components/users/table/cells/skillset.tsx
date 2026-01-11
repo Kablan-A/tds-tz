@@ -6,6 +6,7 @@ import {
   HoverCardTrigger,
 } from "~/components/ui/hover-card";
 import type { User } from "~/lib/types";
+import { transformSkillset } from "~/lib/utils";
 
 type UsersTableCellsSkillsetProps = {
   row: Row<User>;
@@ -14,28 +15,28 @@ type UsersTableCellsSkillsetProps = {
 export const UsersTableCellsSkillset = ({
   row,
 }: UsersTableCellsSkillsetProps) => {
-  const skillSet = row.original.skillSet;
-  if (!skillSet.length) {
+  const skillset = row.original.skillset;
+  if (!skillset.length) {
     return <span className="text-muted-foreground">No skills</span>;
   }
 
-  const truncatedSkills = skillSet.slice(0, 3).join(", ");
-  const hasMoreSkills = skillSet.length > 3;
+  const truncatedStringSkills = transformSkillset(skillset.slice(0, 3));
+  const hasMoreSkills = skillset.length > 3;
 
   if (!hasMoreSkills) {
-    return truncatedSkills;
+    return truncatedStringSkills;
   }
 
   return (
     <HoverCard>
       <HoverCardTrigger asChild>
         <Button variant="link" className="px-0 text-foreground">
-          {truncatedSkills}, ...
+          {truncatedStringSkills}, ...
         </Button>
       </HoverCardTrigger>
       <HoverCardContent className="w-fit">
         <ul className="list-disc ml-3">
-          {row.original.skillSet.map((skill, index) => (
+          {row.original.skillset.map((skill, index) => (
             <li key={index}>{skill}</li>
           ))}
         </ul>
