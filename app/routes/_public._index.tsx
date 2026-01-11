@@ -1,13 +1,50 @@
-import type { Route } from "./+types/_public._index";
+import type { Route } from ".react-router/types/app/routes/+types/_public._index";
+import { useRevalidator } from "react-router";
+import { DataTable } from "~/components/shared/data-table";
+import { UsersTableBulkDelete } from "~/components/users/bulk-delete";
+import { USERS_TABLE_COLUMNS } from "~/components/users/table/columns";
+import type { User } from "~/lib/types";
 
-export function meta({}: Route.MetaArgs) {
-  return [{ title: "TDS TZ" }];
+export async function clientLoader(): Promise<User[]> {
+  return [
+    {
+      id: 1,
+      firstName: "Alice",
+      lastName: "Johnson",
+      skillSet: ["JavaScript", "React", "TypeScript", "Node.js"],
+      createdAt: new Date("2023-01-15T10:00:00Z"),
+      email: "alice.johnson@example.com",
+    },
+    {
+      id: 2,
+      firstName: "Bob",
+      lastName: "Davidson",
+      skillSet: ["JavaScript", "React"],
+      createdAt: new Date("2022-01-15T10:00:00Z"),
+      email: "alice.johnson@example.com",
+    },
+  ];
 }
 
-export default function Home() {
+export function HydrateFallback() {
+  return <div>Loading...</div>;
+}
+
+export default function Home({ loaderData }: Route.ComponentProps) {
+  const revalidator = useRevalidator();
+
   return (
-    <div>
-      <p>Users table</p>
+    <div className="py-10">
+      <DataTable
+        columns={USERS_TABLE_COLUMNS}
+        data={loaderData}
+        bulkActions={(table) => (
+          <UsersTableBulkDelete
+            table={table}
+            onDeleteComplete={() => revalidator.revalidate()}
+          />
+        )}
+      />
     </div>
   );
 }
